@@ -1,0 +1,149 @@
+---
+columnCount: 100
+rowCount: 20
+pathToObjectsIsland: /com/javarush/island/pukhov/entity/object
+configurationsObjects:
+  Wolf:
+    weight: 50
+    maxCount: 30
+    maxSpeed: 3
+    needCountFood: 8
+    mapFood:
+      Horse: 10
+      Deer: 15
+      Rabbit: 60
+      Mouse: 80
+      Goat: 60
+      Sheep: 70
+      Boar: 15
+      Buffalo: 10
+      Duck: 40
+  Boa:
+    weight: 15
+    maxCount: 30
+    maxSpeed: 1
+    needCountFood: 3
+    mapFood:
+      Fox: 15
+      Rabbit: 20
+      Mouse: 40
+      Duck: 10
+  Fox:
+    weight: 8
+    maxCount: 30
+    maxSpeed: 2
+    needCountFood: 2
+    mapFood:
+      Rabbit: 70
+      Mouse: 90
+      Duck: 60
+      Caterpillar: 40
+  Bear:
+    weight: 500
+    maxCount: 5
+    maxSpeed: 2
+    needCountFood: 80
+    mapFood:
+      Boa: 80
+      Horse: 40
+      Deer: 80
+      Rabbit: 80
+      Mouse: 90
+      Goat: 70
+      Sheep: 70
+      Boar: 50
+      Buffalo: 20
+      Duck: 10
+  Eagle:
+    weight: 6
+    maxCount: 20
+    maxSpeed: 3
+    needCountFood: 1
+    mapFood:
+      Fox: 10
+      Rabbit: 90
+      Mouse: 90
+      Duck: 80
+  Horse:
+    weight: 400
+    maxCount: 20
+    maxSpeed: 4
+    needCountFood: 60
+    mapFood:
+      Grass: 100
+  Deer:
+    weight: 300
+    maxCount: 20
+    maxSpeed: 4
+    needCountFood: 50
+    mapFood:
+      Grass: 100
+  Rabbit:
+    weight: 2
+    maxCount: 150
+    maxSpeed: 2
+    needCountFood: 0.45
+    mapFood:
+      Grass: 100
+  Mouse:
+    weight: 2
+    maxCount: 150
+    maxSpeed: 2
+    needCountFood: 0.45
+    mapFood:
+      Caterpillar: 90
+      Grass: 100
+  Goat:
+    weight: 60
+    maxCount: 140
+    maxSpeed: 3
+    needCountFood: 10
+    mapFood:
+      Grass: 100
+  Sheep:
+    weight: 70
+    maxCount: 140
+    maxSpeed: 3
+    needCountFood: 15
+    mapFood:
+      Grass: 100
+  Boar:
+    weight: 400
+    maxCount: 50
+    maxSpeed: 2
+    needCountFood: 50
+    mapFood:
+      Mouse: 50
+      Caterpillar: 90
+      Grass: 100
+  Buffalo:
+    weight: 700
+    maxCount: 10
+    maxSpeed: 3
+    needCountFood: 100
+    mapFood:
+      Grass: 100
+  Duck:
+    weight: 1
+    maxCount: 200
+    maxSpeed: 4
+    needCountFood: 0.15
+    mapFood:
+      Caterpillar: 90
+      Grass: 100
+  Caterpillar:
+    weight: 0.01
+    maxCount: 1000
+    maxSpeed: 0
+    needCountFood: 0
+    mapFood:
+      Grass: 100
+  Grass:
+    weight: 1
+    maxCount: 200
+    maxSpeed: 0
+    needCountFood: 0
+    mapFood: { }
+
+
+
