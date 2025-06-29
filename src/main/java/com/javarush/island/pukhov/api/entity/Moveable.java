@@ -3,5 +3,5 @@ package com.javarush.island.pukhov.api.entity;
 import com.javarush.island.pukhov.entity.map.Location;
 
 public interface Moveable {
-    void move(Location location);
+    void move(Location startLocation);
 }

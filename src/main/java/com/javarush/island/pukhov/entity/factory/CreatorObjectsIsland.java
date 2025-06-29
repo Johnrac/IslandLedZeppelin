@@ -3,6 +3,7 @@ package com.javarush.island.pukhov.entity.factory;
 import com.javarush.island.pukhov.api.annotation.Default;
 import com.javarush.island.pukhov.config.ConfigurationObject;
 import com.javarush.island.pukhov.config.Settings;
+import com.javarush.island.pukhov.constant.ConstantsDefault;
 import com.javarush.island.pukhov.entity.map.Location;
 import com.javarush.island.pukhov.entity.object.ClassProvider;
 import com.javarush.island.pukhov.entity.object.ObjectIsland;
@@ -15,7 +16,6 @@ import lombok.SneakyThrows;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,7 @@ public class CreatorObjectsIsland {
     }
 
     public void fill(Location location) {
-        var objectsIsland = location.getObjectsIsland();
+        var objectsIsland = location.getObjectsLocation();
         for (ObjectIsland prototype : prototypes) {
             tryAddObject(prototype, objectsIsland, location.getLock());
         }
@@ -40,14 +40,14 @@ public class CreatorObjectsIsland {
         if (fill) {
             String type = prototype.getType();
             try {
-                if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
+                if (lock.tryLock(ConstantsDefault.LOCK_WAIT_UNIT, ConstantsDefault.TYPE_TIME_WAIT_LOCK)) {
                     objectsIsland.putIfAbsent(type, new LinkedHashSet<>());
-                    Set<ObjectIsland> residentsType = objectsIsland.get(type);
-                    int currentCount = residentsType.size();
+                    Set<ObjectIsland> objectsType = objectsIsland.get(type);
+                    int currentCount = objectsType.size();
                     int max = prototype.getConfiguration().getMaxCount() - currentCount;
                     int count = Rnd.get(max);
                     for (int i = 0; i < count; i++) {
-                        residentsType.add(prototype.clone());
+                        objectsType.add(prototype.clone());
                     }
                 }
             } finally {

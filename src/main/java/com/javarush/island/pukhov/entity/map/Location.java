@@ -1,6 +1,8 @@
 package com.javarush.island.pukhov.entity.map;
 
+import com.javarush.island.pukhov.api.concurrent.Lockable;
 import com.javarush.island.pukhov.entity.object.ObjectIsland;
+import com.javarush.island.pukhov.util.Rnd;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -10,15 +12,15 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 @Getter
-public class Location {
+public class Location implements Lockable {
 
     private final ReentrantLock lock = new ReentrantLock();
-    private final Map<String, Set<ObjectIsland>> objectsIsland = new ConcurrentHashMap<>();
+    private final Map<String, Set<ObjectIsland>> objectsLocation = new ConcurrentHashMap<>();
 
     @Getter(AccessLevel.NONE)
     private static final int MAX_COUNT_DIRECTIONS = 8;
-
-    private final List<Location> nextLocation = new ArrayList<>(MAX_COUNT_DIRECTIONS);
+    @Getter(AccessLevel.NONE)
+    private final List<Location> possibleLocations = new ArrayList<>(MAX_COUNT_DIRECTIONS);
 
 
     public void updateNextLocation(IslandMap map, int row, int col) {
@@ -31,17 +33,36 @@ public class Location {
                     int newRow = row + dRow;
                     int newCol = col + dCol;
                     if (newRow >= 0 && newCol >= 0 && newCol <= maxCol && newRow <= maxRow) {
-                        nextLocation.add(map.getLocation(newRow, newCol));
+                        possibleLocations.add(map.getLocation(newRow, newCol));
                     }
                 }
             }
         }
     }
 
+    public Location getNextLocation(int countStep) {
+        Set<Location> visitedLocations = new HashSet<>();
+        Location currentLocation = this;
+        visitedLocations.add(currentLocation);
+
+        while (visitedLocations.size()  < countStep) {
+            List<Location> nextLocations = currentLocation.possibleLocations.stream()
+                    .filter(location -> !visitedLocations.contains(location))
+                    .toList();
+            if (nextLocations.isEmpty()) {
+                break;
+            }
+                int index = Rnd.get(nextLocations.size());
+                currentLocation = nextLocations.get(index);
+                visitedLocations.add(currentLocation);
+        }
+        return currentLocation;
+    }
+
     public Map<String, Integer> getStatistic() {
         try {
             lock.lock();
-            return objectsIsland.values().stream()
+            return objectsLocation.values().stream()
                     .parallel()
                     .filter(object -> !object.isEmpty())
                     .collect(Collectors.toMap(set -> set.iterator().next().getIcon(), Set::size));
@@ -50,9 +71,22 @@ public class Location {
         }
     }
 
+    public Set<ObjectIsland> getSetUniquieObjects() {
+        try {
+            lock.lock();
+            return objectsLocation.values().stream()
+                    .parallel()
+                    .filter(set -> !set.isEmpty())
+                    .map(set -> set.iterator().next())
+                    .collect(Collectors.toSet());
+        } finally {
+            lock.unlock();
+        }
+    }
+
     @Override
     public String toString() {
-        return objectsIsland.entrySet().stream()
+        return objectsLocation.entrySet().stream()
                 .filter(entry -> !entry.getValue().isEmpty())
                 .map(entry -> {
                     int countObjects = entry.getValue().size();

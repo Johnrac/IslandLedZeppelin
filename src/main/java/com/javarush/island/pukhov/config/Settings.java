@@ -53,6 +53,8 @@ public class Settings {
     private int columnCount;
     @Getter
     private int rowCount;
+    @Getter
+    private final ConsoleSettings consoleSettings = new ConsoleSettings();
 
     @JsonDeserialize(using = PathDeserializer.class)
     @Getter

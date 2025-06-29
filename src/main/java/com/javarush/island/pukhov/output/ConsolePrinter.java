@@ -11,7 +11,7 @@ public class ConsolePrinter implements Printer{
     public void println(Object information) {
         System.out.println(information);
     }
-    
+
     @Override
     public void printError(RuntimeException exception) {
         exception.printStackTrace();
