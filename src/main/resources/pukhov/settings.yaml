@@ -2,6 +2,9 @@
 columnCount: 100
 rowCount: 20
 pathToObjectsIsland: /com/javarush/island/pukhov/entity/object
+consoleSettings:
+  showColumn: 4
+  showRow: 10
 configurationsObjects:
   Wolf:
     weight: 50
