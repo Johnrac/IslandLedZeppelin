@@ -2,11 +2,12 @@ package com.javarush.island.pukhov.services;
 
 import com.javarush.island.pukhov.api.entity.Moveable;
 import com.javarush.island.pukhov.entity.map.IslandMap;
-import com.javarush.island.pukhov.exception.ErrorHandler;
+import com.javarush.island.pukhov.exception.service.MovementServiceException;
 
 public class MovementService extends AbstractLocationService {
-    public MovementService(ErrorHandler errorHandler, IslandMap map) {
-        super(errorHandler, map);
+
+    public MovementService(IslandMap map) {
+        super(map);
     }
 
     @Override
@@ -18,7 +19,7 @@ public class MovementService extends AbstractLocationService {
                 }
             }));
         } catch (RuntimeException e) {
-            errorHandler.handle(e);
+            throw new MovementServiceException(e);
         }
     }
 }

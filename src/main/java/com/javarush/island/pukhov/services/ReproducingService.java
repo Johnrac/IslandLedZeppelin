@@ -2,11 +2,12 @@ package com.javarush.island.pukhov.services;
 
 import com.javarush.island.pukhov.api.entity.Reproducible;
 import com.javarush.island.pukhov.entity.map.IslandMap;
-import com.javarush.island.pukhov.exception.ErrorHandler;
+import com.javarush.island.pukhov.exception.service.ReproducingServiceException;
 
 public class ReproducingService extends AbstractLocationService {
-    public ReproducingService(ErrorHandler errorHandler, IslandMap map) {
-        super(errorHandler, map);
+
+    public ReproducingService(IslandMap map) {
+        super(map);
     }
 
     @Override
@@ -18,7 +19,7 @@ public class ReproducingService extends AbstractLocationService {
                 }
             }));
         } catch (RuntimeException e) {
-            errorHandler.handle(e);
+            throw new ReproducingServiceException(e);
         }
     }
 }

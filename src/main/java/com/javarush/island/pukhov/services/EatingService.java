@@ -2,11 +2,12 @@ package com.javarush.island.pukhov.services;
 
 import com.javarush.island.pukhov.api.entity.Eater;
 import com.javarush.island.pukhov.entity.map.IslandMap;
-import com.javarush.island.pukhov.exception.ErrorHandler;
+import com.javarush.island.pukhov.exception.service.EatingServiceException;
 
 public class EatingService extends AbstractLocationService {
-    public EatingService(ErrorHandler errorHandler, IslandMap map) {
-        super(errorHandler, map);
+
+    public EatingService(IslandMap map) {
+        super(map);
     }
 
     @Override
@@ -18,7 +19,7 @@ public class EatingService extends AbstractLocationService {
                 }
             }));
         } catch (RuntimeException e) {
-            errorHandler.handle(e);
+            throw new EatingServiceException(e);
         }
     }
 }

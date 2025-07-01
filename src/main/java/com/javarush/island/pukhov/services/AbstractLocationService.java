@@ -3,7 +3,6 @@ package com.javarush.island.pukhov.services;
 import com.javarush.island.pukhov.entity.map.IslandMap;
 import com.javarush.island.pukhov.entity.map.Location;
 import com.javarush.island.pukhov.entity.object.ObjectIsland;
-import com.javarush.island.pukhov.exception.ErrorHandler;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
@@ -13,7 +12,6 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public abstract class AbstractLocationService implements Runnable {
-    protected final ErrorHandler errorHandler;
     private final IslandMap map;
 
     public void processObjects(BiConsumer<ObjectIsland, Location> action) {
