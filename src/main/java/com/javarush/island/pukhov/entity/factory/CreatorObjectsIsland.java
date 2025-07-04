@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CreatorObjectsIsland {
     private Set<ObjectIsland> prototypes = new HashSet<>();
@@ -63,21 +64,21 @@ public class CreatorObjectsIsland {
         Set<Class<?>> classes = classProvider.getClasses();
 
         prototypes = classes.stream()
-                .map(clazz -> {
+                .flatMap(clazz -> {
                     var configObject = settings.getConfigurationsObjects().get(clazz.getSimpleName());
                     if (Objects.nonNull(configObject)) {
                         final String icon = determineIcon(clazz);
                         try {
-                            return (ObjectIsland) clazz.getConstructor(String.class, ConfigurationObjectIsland.class)
+                            ObjectIsland instance = (ObjectIsland) clazz.getConstructor(String.class, ConfigurationObjectIsland.class)
                                     .newInstance(icon, configObject);
+                            return Stream.of(instance);
                         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                                  NoSuchMethodException e) {
                             throw new ApplicationException(Error.NOT_FOUND_CONSTRUCTOR.formatted(clazz), e);
                         }
                     }
-                    return null;
+                    return Stream.empty();
                 })
-                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
     }
 
