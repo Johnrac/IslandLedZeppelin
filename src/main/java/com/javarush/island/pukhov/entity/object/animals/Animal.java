@@ -127,17 +127,19 @@ public abstract class Animal extends ObjectIsland implements Eater, Moveable {
     @SneakyThrows
     private void safeMove(Location sourceLocation, Location destinationLocation) {
         DoubleLock doubleLock = new DoubleLock(sourceLocation, destinationLocation);
-        boolean locked = doubleLock.tryLock(ConstantsDefault.LOCK_WAIT_UNIT, ConstantsDefault.TYPE_TIME_WAIT_LOCK);
-        boolean isMoved = false;
+        boolean locked = false;
         try {
+            locked = doubleLock.tryLock(ConstantsDefault.LOCK_WAIT_UNIT, ConstantsDefault.TYPE_TIME_WAIT_LOCK);
             if (locked) {
-                isMoved = processMove(sourceLocation, destinationLocation);
+                processMove(sourceLocation, destinationLocation);
             }
+        } catch (Exception e) {
+            if (locked) {
+                rollbackMove(sourceLocation, destinationLocation);
+            }
+            throw e;
         } finally {
             if (locked) {
-                if (!isMoved) {
-                    rollbackMove(sourceLocation, destinationLocation);
-                }
                 doubleLock.unlock();
             }
         }
