@@ -21,7 +21,7 @@ public class ClassProvider {
 
     @SneakyThrows
     public Set<Class<?>> getClasses() {
-        final Path rootPath = Path.of(this.getClass().getResource("/").toURI());
+        final Path rootPath = Path.of(Objects.requireNonNull(this.getClass().getResource("/")).toURI());
         try (Stream<Path> streamFiles = Files.walk(pathToObjectsIsland)) {
             return streamFiles
                     .parallel()
