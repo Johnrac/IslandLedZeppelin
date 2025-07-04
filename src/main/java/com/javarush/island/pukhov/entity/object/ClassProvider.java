@@ -24,6 +24,7 @@ public class ClassProvider {
         final Path rootPath = Path.of(this.getClass().getResource("/").toURI());
         try (Stream<Path> streamFiles = Files.walk(pathToObjectsIsland)) {
             return streamFiles
+                    .parallel()
                     .filter(p -> p.toString().endsWith(SUFFIX_CLASS))
                     .map(p -> loadClass(p, rootPath))
                     .filter(Objects::nonNull)
@@ -33,10 +34,9 @@ public class ClassProvider {
 
     private Class<?> loadClass(Path p, Path rootPath) {
         String className = getClassName(p, rootPath);
-        ClassLoader classLoader = this.getClass().getClassLoader();
         Class<?> clazz;
         try {
-            clazz = classLoader.loadClass(className);
+            clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
             throw new ApplicationException(e);
         }
