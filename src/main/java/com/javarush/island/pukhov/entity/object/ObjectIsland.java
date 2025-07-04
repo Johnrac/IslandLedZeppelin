@@ -2,7 +2,7 @@ package com.javarush.island.pukhov.entity.object;
 
 import com.javarush.island.pukhov.api.annotation.Default;
 import com.javarush.island.pukhov.api.entity.Reproducible;
-import com.javarush.island.pukhov.config.ConfigurationObject;
+import com.javarush.island.pukhov.config.ConfigurationObjectIsland;
 import com.javarush.island.pukhov.config.UnitCount;
 import com.javarush.island.pukhov.constant.ConstantsDefault;
 import com.javarush.island.pukhov.entity.map.Location;
@@ -24,13 +24,13 @@ public abstract class ObjectIsland implements Reproducible, Cloneable {
 
     private final String icon;
     private final String type = getClass().getSimpleName();
-    private final ConfigurationObject configuration;
+    private final ConfigurationObjectIsland configuration;
 
     private long id = counter.incrementAndGet();
     @Setter(AccessLevel.PROTECTED)
     private double weight;
 
-    protected ObjectIsland(String icon, ConfigurationObject config) {
+    protected ObjectIsland(String icon, ConfigurationObjectIsland config) {
         this.icon = icon;
         configuration = config;
         this.weight = config.getMaxWeight();

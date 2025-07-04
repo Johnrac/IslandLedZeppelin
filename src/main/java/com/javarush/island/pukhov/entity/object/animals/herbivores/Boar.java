@@ -1,14 +1,11 @@
 package com.javarush.island.pukhov.entity.object.animals.herbivores;
 
 import com.javarush.island.pukhov.api.annotation.Default;
-import com.javarush.island.pukhov.config.ConfigurationObject;
+import com.javarush.island.pukhov.config.ConfigurationObjectIsland;
 
-/*
-TODO: Не только травоядный
- */
 @Default(icon = "🐗")
 public class Boar extends Herbivore {
-    public Boar(String icon, ConfigurationObject config) {
+    public Boar(String icon, ConfigurationObjectIsland config) {
         super(icon, config);
     }
 }

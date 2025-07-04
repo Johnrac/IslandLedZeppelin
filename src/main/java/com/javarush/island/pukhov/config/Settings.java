@@ -60,7 +60,7 @@ public class Settings {
     @Getter
     private java.nio.file.Path pathToObjectsIsland;
     @Getter
-    private Map<String,ConfigurationObject> configurationsObjects;
+    private Map<String, ConfigurationObjectIsland> configurationsObjects;
 
     private Settings() {
         if (pathToSettings.isEmpty()) {

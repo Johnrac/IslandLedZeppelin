@@ -1,7 +1,7 @@
 package com.javarush.island.pukhov.entity.factory;
 
 import com.javarush.island.pukhov.api.annotation.Default;
-import com.javarush.island.pukhov.config.ConfigurationObject;
+import com.javarush.island.pukhov.config.ConfigurationObjectIsland;
 import com.javarush.island.pukhov.config.Settings;
 import com.javarush.island.pukhov.constant.ConstantsDefault;
 import com.javarush.island.pukhov.entity.map.Location;
@@ -68,7 +68,7 @@ public class CreatorObjectsIsland {
                     if (Objects.nonNull(configObject)) {
                         final String icon = determineIcon(clazz);
                         try {
-                            return (ObjectIsland) clazz.getConstructor(String.class, ConfigurationObject.class)
+                            return (ObjectIsland) clazz.getConstructor(String.class, ConfigurationObjectIsland.class)
                                     .newInstance(icon, configObject);
                         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                                  NoSuchMethodException e) {

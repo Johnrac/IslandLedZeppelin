@@ -8,7 +8,7 @@ import java.util.Map;
 
 @ToString
 @Getter
-public class ConfigurationObject {
+public class ConfigurationObjectIsland {
     @JsonProperty("weight")
     int maxWeight;
     int maxCount;

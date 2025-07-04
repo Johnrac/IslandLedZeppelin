@@ -1,12 +1,12 @@
 package com.javarush.island.pukhov.entity.object.animals.predators;
 
 import com.javarush.island.pukhov.api.annotation.Default;
-import com.javarush.island.pukhov.config.ConfigurationObject;
+import com.javarush.island.pukhov.config.ConfigurationObjectIsland;
 
 @Default(icon = "\uD83D\uDC3A")
 public class Wolf extends Predator {
 
-    public Wolf(String icon, ConfigurationObject config) {
+    public Wolf(String icon, ConfigurationObjectIsland config) {
         super(icon, config);
     }
 

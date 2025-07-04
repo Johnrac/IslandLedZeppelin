@@ -3,7 +3,7 @@ package com.javarush.island.pukhov.entity.object.animals;
 import com.javarush.island.pukhov.api.entity.Eater;
 import com.javarush.island.pukhov.api.entity.Moveable;
 import com.javarush.island.pukhov.concurrent.DoubleLock;
-import com.javarush.island.pukhov.config.ConfigurationObject;
+import com.javarush.island.pukhov.config.ConfigurationObjectIsland;
 import com.javarush.island.pukhov.constant.ConstantsDefault;
 import com.javarush.island.pukhov.entity.map.Location;
 import com.javarush.island.pukhov.entity.object.ObjectIsland;
@@ -20,7 +20,7 @@ public abstract class Animal extends ObjectIsland implements Eater, Moveable {
 
     private final Map<String, Integer> mapFood;
 
-    protected Animal(String icon, ConfigurationObject config) {
+    protected Animal(String icon, ConfigurationObjectIsland config) {
         super(icon, config);
         this.mapFood = config.getMapFood();
     }
@@ -86,7 +86,7 @@ public abstract class Animal extends ObjectIsland implements Eater, Moveable {
     }
 
     private boolean isHungry(Double amountFoodEaten) {
-        ConfigurationObject configuration = getConfiguration();
+        ConfigurationObjectIsland configuration = getConfiguration();
         double needCountFood = configuration.getNeedCountFood();
         int maxWeight = configuration.getMaxWeight();
         return amountFoodEaten < needCountFood && getWeight() < maxWeight;
