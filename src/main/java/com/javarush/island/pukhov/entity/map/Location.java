@@ -63,7 +63,6 @@ public class Location implements Lockable {
         try {
             lock.lock();
             return objectsLocation.values().stream()
-                    .parallel()
                     .filter(object -> !object.isEmpty())
                     .collect(Collectors.toMap(set -> set.iterator().next().getIcon(), Set::size));
         } finally {
@@ -75,7 +74,6 @@ public class Location implements Lockable {
         try {
             lock.lock();
             return objectsLocation.values().stream()
-                    .parallel()
                     .filter(set -> !set.isEmpty())
                     .map(set -> set.iterator().next())
                     .collect(Collectors.toSet());
