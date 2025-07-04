@@ -1,6 +1,7 @@
 package com.javarush.island.pukhov.concurrent;
 
 import com.javarush.island.pukhov.api.concurrent.Lockable;
+import com.javarush.island.pukhov.exception.ApplicationException;
 
 import java.io.Serial;
 import java.util.concurrent.TimeUnit;
@@ -16,13 +17,13 @@ public class DoubleLock extends ReentrantLock {
     private final AtomicBoolean isLocked = new AtomicBoolean();
 
     public DoubleLock(Lockable object1, Lockable object2) {
-           if (object1.hashCode() > object2.hashCode()) {
-               maxLock = object1.getLock();
-               minLock = object2.getLock();
-           } else {
-               maxLock = object2.getLock();
-               minLock = object1.getLock();
-           }
+        if (object1.hashCode() > object2.hashCode()) {
+            maxLock = object1.getLock();
+            minLock = object2.getLock();
+        } else {
+            maxLock = object2.getLock();
+            minLock = object1.getLock();
+        }
     }
 
     @Override
@@ -34,27 +35,41 @@ public class DoubleLock extends ReentrantLock {
 
     @Override
     public boolean tryLock() {
-        if (maxLock.tryLock()) {
-            if (minLock.tryLock()) {
-                isLocked.set(true);
-            } else {
-                maxLock.unlock();
-            }
+        try {
+            return tryLock(0, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ApplicationException(e);
         }
-        return isLocked.get();
     }
+
 
     @Override
     public boolean tryLock(long timeout, TimeUnit unit) throws InterruptedException {
-
-        if (maxLock.tryLock(timeout, unit)) {
-            if (minLock.tryLock(timeout,unit)) {
-                isLocked.set(true);
-            } else {
-                maxLock.unlock();
+        boolean maxLocked = false;
+        boolean minLocked = false;
+        try {
+            maxLocked = maxLock.tryLock(timeout, unit);
+            if (!maxLocked) {
+                return false;
+            }
+            minLocked = minLock.tryLock(timeout, unit);
+            if (!minLocked) {
+                return false;
+            }
+            isLocked.set(true);
+            return true;
+        } finally {
+            if (!isLocked.get()) {
+                if (minLocked) {
+                    minLock.unlock();
+                }
+                if (maxLocked) {
+                    maxLock.unlock();
+                }
+                isLocked.set(false);
             }
         }
-        return isLocked.get();
     }
 
     @Override
@@ -62,6 +77,7 @@ public class DoubleLock extends ReentrantLock {
         if (isLocked()) {
             maxLock.unlock();
             minLock.unlock();
+            isLocked.set(false);
         }
     }
 
