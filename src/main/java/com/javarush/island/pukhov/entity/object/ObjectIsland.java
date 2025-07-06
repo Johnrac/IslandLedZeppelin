@@ -21,6 +21,7 @@ public abstract class ObjectIsland implements Reproducible, Cloneable {
 
     private static final AtomicLong counter = new AtomicLong();
     private static final int COUNT_REPRODUCE = 1;
+    public static final UnitCount UNIT_COUNT = UnitCount.UNIT;
 
     private final String icon;
     private final String type = getClass().getSimpleName();
@@ -68,7 +69,7 @@ public abstract class ObjectIsland implements Reproducible, Cloneable {
     private void processReproduction(Location location) {
         Set<ObjectIsland> objectsLocation = location.getObjectsLocation().get(getType());
         if (isPreparedReproduce(objectsLocation)) {
-            reproduce(objectsLocation, COUNT_REPRODUCE, UnitCount.UNIT);
+            reproduce(objectsLocation, COUNT_REPRODUCE, UNIT_COUNT);
         }
     }
 
@@ -80,10 +81,12 @@ public abstract class ObjectIsland implements Reproducible, Cloneable {
     }
 
     private int getCountObjects(int size, int count, UnitCount unit) {
-        return switch (unit) {
+        int max = getConfiguration().getMaxCount() - size;
+        int calculateUnit =  switch (unit) {
             case UNIT -> count;
             case PERCENT -> Math.ceilDiv(count * size, 100);
         };
+        return Math.min(max,calculateUnit);
 
     }
 
